@@ -1,10 +1,12 @@
 import React from 'react'
-import Dashboard from './components/Dashboard'
+import Crypto from './components/Crypto'
+import CryptoNews from './components/CryptoNews'
 
 const page = () => {
   return (
     <>
-    <Dashboard/>
+    <Crypto/>
+    <CryptoNews/>   
     </>
   )
 }
