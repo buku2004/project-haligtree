@@ -7,6 +7,14 @@ interface CryptoData {
   timestamp: string;
 }
 
+const CryptoNames: {[key: string]: string} = {
+  "Bitcoin": "btcusdt",
+  "ethusdt": "Ethereum",
+  "solusdt": "Solana",
+  "dogeusdt": "Dogecoin",
+  "xrpusdt": "xrp",
+};
+
 const CryptoDashboard = () => {
   const [cryptoData, setCryptoData] = useState<CryptoData[]>([]);
   const [status, setStatus] = useState<string>("Connecting...");
@@ -80,7 +88,7 @@ const CryptoDashboard = () => {
         <div className="flex flex-col gap-2">
           {cryptoData.map((crypto) => (
             <div key={crypto.symbol} className="bg-white p-4 rounded-lg shadow">
-              <div className="text-lg font-semibold">{crypto.symbol}</div>
+              <div className="text-lg font-semibold">{CryptoNames[crypto.symbol] || crypto.symbol}</div>
               <div className="text-3xl font-bold mt-2">${crypto.price.toFixed(4)}</div>
             </div>
           ))}
