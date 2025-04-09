@@ -5,14 +5,21 @@ interface CryptoData {
   symbol: string;
   price: number;
   timestamp: string;
+  volume?: number;
+  priceChangePercent?: number;
 }
 
-const CryptoNames: {[key: string]: string} = {
-  "Bitcoin": "btcusdt",
-  "ethusdt": "Ethereum",
-  "solusdt": "Solana",
-  "dogeusdt": "Dogecoin",
-  "xrpusdt": "xrp",
+const CryptoNames: { [key: string]: string } = {
+  BTCUSDT: "Bitcoin",
+  ETHUSDT: "Ethereum",
+  SOLUSDT: "Solana",
+  DOGEUSDT: "Dogecoin",
+  XRPUSDT: "XRP",
+  BNBUSDT: "Binance",
+  SUIUSDT: "Sui",
+  USDCUSDT: "USDC",
+  LINKUSDT: "Link",
+  TRUMPUSDT: "Trump"
 };
 
 const CryptoDashboard = () => {
@@ -39,10 +46,7 @@ const CryptoDashboard = () => {
         ws.onmessage = (event) => {
           try {
             const data: CryptoData[] = JSON.parse(event.data);
-            
-            if (Array.isArray(data) && data.length > 0) {
-              setCryptoData(data);
-            }
+            setCryptoData(data);
           } catch (err) {
             console.error("Error parsing WebSocket data:", err);
           }
@@ -75,21 +79,39 @@ const CryptoDashboard = () => {
   }, []);
 
   return (
-    <div className="p-6 bg-gray-100 rounded-lg shadow-md w-[20rem]">
-      <h1 className="text-2xl font-bold mb-4">Live Crypto Prices</h1>
-      
+    <div className="p-6 bg-gray-100 rounded-lg shadow-md max-w-3xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Popular Coins(USDT Network)</h1>
+
       <div className="mb-2 text-sm text-gray-500">Status: {status}</div>
-      
+
       {error && (
-        <div className="mb-4 p-2 bg-red-100 text-red-700 rounded ">{error}</div>
+        <div className="mb-4 p-2 bg-red-100 text-red-700 rounded">{error}</div>
       )}
-      
+
       {cryptoData.length > 0 ? (
-        <div className="flex flex-col gap-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {cryptoData.map((crypto) => (
-            <div key={crypto.symbol} className="bg-white p-4 rounded-lg shadow">
-              <div className="text-lg font-semibold">{CryptoNames[crypto.symbol] || crypto.symbol}</div>
-              <div className="text-3xl font-bold mt-2">${crypto.price.toFixed(4)}</div>
+            <div
+              key={crypto.symbol}
+              className="bg-white p-4 rounded-lg shadow"
+            >
+              <div className="text-lg font-semibold">
+                {CryptoNames[crypto.symbol] || crypto.symbol}
+              </div>
+              <div className="text-2xl font-bold mt-1 text-blue-600">
+                ${crypto.price.toFixed(4)}
+              </div>
+              {typeof crypto.priceChangePercent === 'number' && (
+                <div className={`text-sm ${crypto.priceChangePercent < 0 ? 'text-red-600' : 'text-green-600'}`}>
+                  Trend 24h: {crypto.priceChangePercent.toFixed(2)}%
+                </div>
+               )}
+
+              <div>
+                  Volume: {crypto.volume?.toLocaleString(undefined, {
+                      maximumFractionDigits: 0,
+                    })}
+              </div>
             </div>
           ))}
         </div>
