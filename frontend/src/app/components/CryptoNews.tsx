@@ -89,7 +89,7 @@ const CryptoNews = () => {
   }
 
   return (
-    <div className="p-4 bg-gray-100 rounded-lg shadow w-[95%] w-max-full m-8">
+    <div className="p-4 bg-gray-100 rounded-lg shadow-md w-[85%] mx-auto my-8">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-xl font-bold">News</h1>
         {lastUpdated && <span className="text-xs text-gray-500">Updated: {lastUpdated}</span>}

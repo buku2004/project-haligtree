@@ -2,7 +2,12 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="bg-[#710193] text-white h-[8rem] flex flex-col justify-center items-center shadow-md px-4">
+    <footer 
+    className="
+    bg-gray-100 mx-auto h-[8rem] flex flex-col 
+    justify-center items-center shadow-md px-4 w-[90%] mb-8 rounded-md
+    "
+    >
       <p className="text-sm mt-1 cursor-default">Your gateway to real-time crypto insights</p>
       <div className="flex gap-4 mt-2 text-sm">
         <a href="#about" className="hover:underline">About</a>

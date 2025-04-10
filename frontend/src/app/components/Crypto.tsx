@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import "animate.css";
 
 interface CryptoData {
   symbol: string;
@@ -19,13 +20,16 @@ const CryptoNames: { [key: string]: string } = {
   SUIUSDT: "Sui",
   USDCUSDT: "USDC",
   LINKUSDT: "Link",
-  TRUMPUSDT: "Trump"
+  TRUMPUSDT: "Trump",
+  TRXUSDT: "Tron",
+  LTCUSDT: "Litecoin"
 };
 
 const CryptoDashboard = () => {
   const [cryptoData, setCryptoData] = useState<CryptoData[]>([]);
   const [status, setStatus] = useState<string>("Connecting...");
   const [error, setError] = useState<string | null>(null);
+  const [animate, setAnimate] = useState(true);
 
   useEffect(() => {
     let ws: WebSocket | null = null;
@@ -78,9 +82,22 @@ const CryptoDashboard = () => {
     };
   }, []);
 
+  const handleClick = () => {
+    setAnimate(false);
+    setTimeout(() => {
+      setAnimate(true);
+    }, 10);
+  };
+
   return (
-    <div className="p-6 bg-gray-100 rounded-lg shadow-md max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Popular Coins(USDT Network)</h1>
+    <div className="p-6 bg-gray-100 rounded-lg shadow-md max-w-[60%] mx-auto cursor-default mt-8">
+      <h1 
+      onClick={handleClick}
+      className={`text-2xl font-bold mb-4 
+        ${animate ? 'animate__animated animate__bounce' : ''}`}
+      >
+        Popular Coins
+      </h1>
 
       <div className="mb-2 text-sm text-gray-500">Status: {status}</div>
 
@@ -89,7 +106,7 @@ const CryptoDashboard = () => {
       )}
 
       {cryptoData.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {cryptoData.map((crypto) => (
             <div
               key={crypto.symbol}

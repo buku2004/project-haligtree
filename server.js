@@ -15,7 +15,10 @@ const activeConnections = new Set();
 const latestCryptoData = {};
 const miniTickerData = {};
 
-const coins = ["btcusdt", "ethusdt", "solusdt", "xrpusdt", "dogeusdt", "bnbusdt", "suiusdt", "usdcusdt", "linkusdt", "trumpusdt"];
+const coins = [
+    "btcusdt", "ethusdt", "solusdt", "xrpusdt", "dogeusdt", "bnbusdt",
+     "suiusdt", "usdcusdt", "linkusdt", "trumpusdt", "trxusdt", "ltcusdt"
+    ];
 
 // Open WebSocket connection for Binance streams
 const tradeStreams = coins.map(coin => `${coin}@trade`);
