@@ -1,12 +1,10 @@
 import React from 'react'
-import Crypto from './components/Crypto'
-import CryptoNews from './components/CryptoNews'
+import Alignment from './components/Alignment'
 
 const page = () => {
   return (
     <>
-    <Crypto/>
-    <CryptoNews/>   
+    <Alignment/>  
     </>
   )
 }

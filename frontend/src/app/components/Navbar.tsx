@@ -3,12 +3,11 @@ import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Home, Wallet,DollarSign, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 export default function Navbar() {
   const [collapsed, setCollapsed] = useState(true);
-  const [animate, setAnimate] = useState(true);
+  // const [animate, setAnimate] = useState(true);
 
   const navItems = [
     { icon: Home, label: "Dashboard" },
@@ -17,29 +16,29 @@ export default function Navbar() {
     { icon: Settings, label: "Settings" }
   ];
 
-  const handleClick = () => {
-    setAnimate(false);
-    setTimeout(() => {
-        setAnimate(true);
-    }, 10);
-  }
+  // const handleClick = () => {
+  //   setAnimate(false);
+  //   setTimeout(() => {
+  //       setAnimate(true);
+  //   }, 10);
+  // }  
 
   return (
     <div className="overflow-hidden inline h-screen relative">
       {/* Sidebar */}
       <div
         className={cn(
-          "border-r flex flex-col transition-all duration-300 ease-in-out fixed left-0 top-0 bottom-0",
-          collapsed ? "w-16" : "w-64"
+          "border-r flex flex-col transition-all duration-300 ease-in-out fixed left-0 top-0 bottom-0 backdrop-blur-sm",
+          collapsed ? "w-[4rem]" : "w-[13rem]"
         )}
       >
         {/* Header */}
         <div 
-        onClick={handleClick}
+        // onClick={handleClick}
         className={cn(
           "flex items-center h-14 px-4 border-b transition-all duration-300 ease-in-out",
           collapsed ? "justify-center" : "justify-between",
-          animate ? 'animate__animated animate__wobble' : ''
+          // animate ? 'animate__animated animate__wobble' : ''
         )}>
           {!collapsed && (
             <h2 className="font-bold text-xl text-primary transition-opacity duration-200">
@@ -49,7 +48,7 @@ export default function Navbar() {
           <Button
             variant="ghost"
             size="icon"
-            className="h-8 w-8"
+            className="h-8 w-8 cursor-pointer"
             onClick={() => setCollapsed(!collapsed)}
             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
@@ -58,16 +57,16 @@ export default function Navbar() {
         </div>
 
         {/* Navigation */}
-        <ScrollArea className="flex-1 py-4">
-          <nav className="px-2 space-y-1">
-            <TooltipProvider delayDuration={200}>
+        <div className="flex-1 py-4 ">
+          <nav className="px-2 space-y-1 ">
+            <TooltipProvider >
               {navItems.map((item, index) => (
                 <Tooltip key={index}>
                   <TooltipTrigger asChild>
                     <Button
                       variant="ghost"
                       className={cn(
-                        "w-full flex transition-all duration-200 ease-in-out",
+                        "w-full flex transition-all duration-200 ease-in-out cursor-pointer",
                         collapsed ? "justify-center px-2" : "justify-start px-3"
                       )}
                     >
@@ -89,7 +88,7 @@ export default function Navbar() {
               ))}
             </TooltipProvider>
           </nav>
-        </ScrollArea>
+        </div>
       </div>
     </div>
   );

@@ -90,7 +90,7 @@ const CryptoDashboard = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-100 rounded-lg shadow-md max-w-[60%] mx-auto cursor-default mt-8">
+    <div className="p-6 bg-gray-100 rounded-lg shadow-md max-w-[85%] cursor-default ml-auto">
       <h1 
       onClick={handleClick}
       className={`text-2xl font-bold mb-4 
