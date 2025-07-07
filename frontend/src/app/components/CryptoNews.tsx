@@ -89,14 +89,15 @@ const CryptoNews = () => {
   }
 
   return (
-    <div className="p-4 bg-gray-100 rounded-lg shadow-md w-[85%] mx-auto mb-8">
+    <div className="bg-gradient-to-r from-blue-600 to-violet-600
+    p-4 rounded-lg shadow-md w-[85%] mx-auto mb-8">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-bold">News</h1>
-        {lastUpdated && <span className="text-xs text-gray-500">Updated: {lastUpdated}</span>}
+        <h1 className="text-xl font-bold text-white">News</h1>
+        {lastUpdated && <span className="text-xs text-white">Updated: {lastUpdated}</span>}
       </div>
       
       {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 ">
           {[...Array(4)].map((_, i) => (
             <div key={i} className="animate-pulse bg-white p-4 rounded-lg">
               <div className="h-32 bg-gray-200 rounded mb-2"></div>
@@ -113,9 +114,9 @@ const CryptoNews = () => {
               href={article.url} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="bg-white rounded-lg shadow hover:shadow-md transition-shadow block flex flex-col"
+              className="bg-white/40 rounded-lg shadow hover:shadow-md transition-shadow block flex flex-col"
             >
-              <div className="h-40 overflow-hidden rounded-t-lg">
+              <div className="h-40 overflow-hidden rounded-t-lg bg-white">
                 <img 
                   src={article.imageUrl} 
                   alt={article.title}
@@ -123,7 +124,7 @@ const CryptoNews = () => {
                 />
               </div>
               <div className="p-3 flex flex-col flex-grow">
-                <h2 className="font-semibold text-blue-600 hover:text-blue-800 line-clamp-2 mb-2">
+                <h2 className="font-semibold text-black/80 hover:text-black/50 line-clamp-2 mb-2">
                   {article.title}
                 </h2>
                 <p className="text-sm text-gray-600 line-clamp-3 mb-2 flex-grow">

@@ -33,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${JetBrains.className} antialiased`}
+        className={`${JetBrains.className} antialiased bg-[#efecf5]`}
       >
         <Navbar/>
         {children}

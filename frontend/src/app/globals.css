@@ -3,6 +3,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+:root {
+  --primary-bg: #1f2937;
+  --secondary-bg: #efecf5;
+  --accent-bg: #3b82f6;
+}
+
 /* :root {
   --background: #ffffff;
   --foreground: #171717;

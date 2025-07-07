@@ -3,9 +3,9 @@ import React from 'react';
 const Footer = () => {
   return (
     <footer 
-    className="
-    bg-gray-100 mx-auto h-[8rem] flex flex-col 
-    justify-center items-center shadow-md px-4 w-[90%] mb-8 rounded-md
+    className="bg-gradient-to-r from-blue-600 to-violet-600
+    mx-auto h-[8rem] flex flex-col 
+    justify-center items-center shadow-md px-4 w-[90%] mb-8 rounded-md text-white
     "
     >
       <p className="text-sm mt-1 cursor-default">Your gateway to real-time crypto insights</p>

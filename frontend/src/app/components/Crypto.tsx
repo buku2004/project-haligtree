@@ -90,16 +90,19 @@ const CryptoDashboard = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-100 rounded-lg shadow-md max-w-[85%] cursor-default ml-auto">
+    <div className="relative p-6
+    bg-gradient-to-r from-blue-600 to-violet-600 
+    rounded-lg shadow-md max-w-[85%] cursor-default ml-auto"
+    >
       <h1 
       onClick={handleClick}
-      className={`text-2xl font-bold mb-4 
+      className={`text-2xl text-white font-bold mb-4 
         ${animate ? 'animate__animated animate__bounce' : ''}`}
       >
         Popular Coins
       </h1>
 
-      <div className="mb-2 text-sm text-gray-500">Status: {status}</div>
+      <div className="mb-2 text-sm text-white">Status: {status}</div>
 
       {error && (
         <div className="mb-4 p-2 bg-red-100 text-red-700 rounded">{error}</div>
@@ -110,17 +113,17 @@ const CryptoDashboard = () => {
           {cryptoData.map((crypto) => (
             <div
               key={crypto.symbol}
-              className="bg-white p-4 rounded-lg shadow"
+              className="relative z-10 p-4 b-w-4 rounded-lg shadow-lg bg-white/40 text-gray-200"
             >
               <div className="text-lg font-semibold">
                 {CryptoNames[crypto.symbol] || crypto.symbol}
               </div>
-              <div className="text-2xl font-bold mt-1 text-blue-600">
+              <div className="text-2xl font-bold mt-1 text-gray-100">
                 ${crypto.price.toFixed(4)}
               </div>
               {typeof crypto.priceChangePercent === 'number' && (
                 <div className={`text-sm ${crypto.priceChangePercent < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                  Trend 24h: {crypto.priceChangePercent.toFixed(2)}%
+                  {crypto.priceChangePercent.toFixed(2)}%
                 </div>
                )}
 
