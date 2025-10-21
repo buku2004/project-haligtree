@@ -2,7 +2,7 @@ import React from 'react'
 
 const Box1 = () => {
   return (
-    <div className="bg-gradient-to-r from-blue-600 to-violet-600
+    <div className="bg-gray-200/40
     w-[18rem] h-[14rem] mr-auto rounded-lg"
     >
         Box1

@@ -91,18 +91,18 @@ const CryptoDashboard = () => {
 
   return (
     <div className="relative p-6
-    bg-gradient-to-r from-blue-600 to-violet-600 
+    bg-gray-200/40
     rounded-lg shadow-md max-w-[85%] cursor-default ml-auto"
     >
       <h1 
       onClick={handleClick}
-      className={`text-2xl text-white font-bold mb-4 
+      className={`text-2xl font-bold mb-4 
         ${animate ? 'animate__animated animate__bounce' : ''}`}
       >
         Popular Coins
       </h1>
 
-      <div className="mb-2 text-sm text-white">Status: {status}</div>
+      <div className="mb-2 text-sm">Status: {status}</div>
 
       {error && (
         <div className="mb-4 p-2 bg-red-100 text-red-700 rounded">{error}</div>
@@ -113,12 +113,12 @@ const CryptoDashboard = () => {
           {cryptoData.map((crypto) => (
             <div
               key={crypto.symbol}
-              className="relative z-10 p-4 b-w-4 rounded-lg shadow-lg bg-white/40 text-gray-200"
+              className="relative z-10 p-4 b-w-4 rounded-lg shadow-lg bg-white/80"
             >
               <div className="text-lg font-semibold">
                 {CryptoNames[crypto.symbol] || crypto.symbol}
               </div>
-              <div className="text-2xl font-bold mt-1 text-gray-100">
+              <div className="text-2xl font-bold mt-1">
                 ${crypto.price.toFixed(4)}
               </div>
               {typeof crypto.priceChangePercent === 'number' && (
