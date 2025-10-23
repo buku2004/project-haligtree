@@ -96,7 +96,7 @@ const CryptoDashboard = () => {
     >
       <h1 
       onClick={handleClick}
-      className={`text-2xl font-bold mb-4 
+      className={`text-2xl text-[#333] font-bold mb-4 
         ${animate ? 'animate__animated animate__bounce' : ''}`}
       >
         Popular Coins
@@ -113,7 +113,7 @@ const CryptoDashboard = () => {
           {cryptoData.map((crypto) => (
             <div
               key={crypto.symbol}
-              className="relative z-10 p-4 b-w-4 rounded-lg shadow-lg bg-white/80"
+              className="relative z-10 p-4 b-w-4 rounded-lg shadow-lg bg-white/80 text-[#333]"
             >
               <div className="text-lg font-semibold">
                 {CryptoNames[crypto.symbol] || crypto.symbol}

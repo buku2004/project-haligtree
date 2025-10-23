@@ -51,11 +51,11 @@ const Stats = async () => {
     mx-auto h-[4rem] flex flex-col bg-gray-200/40
     justify-center items-center shadow-md px-4 w-[90%] mt-4 rounded-md'
     >
-    <div className='flex gap-14'>
-      <p>Cryptos: {stats!.active_cryptocurrencies}</p>
-      <p>Market Cap: ${marketCap}</p>
-      <p>24h Volume: ${volume24h}</p>
-      <p>Dominance: BTC-{btcDom}% | ETH-{ethDom}%</p>
+    <div className='flex gap-8 text-[#333]'>
+      <p className='border-1 border-blue-600/50 rounded-3xl text-center bg-white px-4 py-2 shadow-md'>{stats!.active_cryptocurrencies} cryptos</p>
+      <p className='border-1 border-blue-600/50 rounded-3xl text-center bg-white px-4 py-2 shadow-md'>Market Cap: ${marketCap}</p>
+      <p className='border-1 border-blue-600/50 rounded-3xl text-center bg-white px-4 py-2 shadow-md'>24h Volume: ${volume24h}</p>
+      <p className='border-1 border-blue-600/50 rounded-3xl text-center bg-white px-4 py-2 shadow-md'>Dominance: BTC-{btcDom}% | ETH-{ethDom}%</p>
     </div>
 
     </div>

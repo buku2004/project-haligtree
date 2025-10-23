@@ -89,11 +89,11 @@ const CryptoNews = () => {
   }
 
   return (
-    <div className="bg-gradient-to-r from-blue-600 to-violet-600
+    <div className="bg-gray-200/40
     p-4 rounded-lg shadow-md w-[85%] mx-auto mb-8">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-bold text-white">News</h1>
-        {lastUpdated && <span className="text-xs text-white">Updated: {lastUpdated}</span>}
+        <h1 className="text-xl font-bold text-[#333]">News</h1>
+        {lastUpdated && <span className="text-xs text-[#333]">Updated: {lastUpdated}</span>}
       </div>
       
       {loading ? (
@@ -124,7 +124,7 @@ const CryptoNews = () => {
                 />
               </div>
               <div className="p-3 flex flex-col flex-grow">
-                <h2 className="font-semibold text-black/80 hover:text-black/50 line-clamp-2 mb-2">
+                <h2 className="font-semibold text-black/80 hover:text-blue-600/80 line-clamp-2 mb-2">
                   {article.title}
                 </h2>
                 <p className="text-sm text-gray-600 line-clamp-3 mb-2 flex-grow">
