@@ -3,8 +3,7 @@ import CryptoNews from "./CryptoNews";
 import Crypto from './Crypto'
 import FearGreed from './FearGreed';
 import Stats from './Stats';
-import Box1 from './Box1';
-import Box2 from './Box2';
+import GainerLoser from './GainerLoser';
 
 const Alignment = () => {
   return (
@@ -14,8 +13,7 @@ const Alignment = () => {
           <Crypto/>
           <div className='flex flex-col gap-8'>
             <FearGreed/>
-            <Box1/>
-            <Box2/>
+            <GainerLoser/>
           </div>
         </div>
         <CryptoNews/>
