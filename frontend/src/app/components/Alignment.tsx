@@ -1,26 +1,37 @@
-import React from 'react'
+import React from "react";
 import CryptoNews from "./CryptoNews";
-import Crypto from './Crypto'
-// import FearGreed from './FearGreed';
-import Stats from './Stats';
-import GainerLoser from './GainerLoser';
-import MarketDominance from './MarketDominance';
+import Crypto from "./Crypto";
+import GainerLoser from "./GainerLoser";
+import MarketDominance from "./MarketDominance";
 
 const Alignment = () => {
   return (
-    <div className='inline-flex flex-col'>
-      <Stats/>
-        <div className='my-8 gap-8 flex mx-auto'>
-          <Crypto/>
-          <div className='flex flex-col gap-8'>
-            {/* <FearGreed/> */}
-            <GainerLoser/>
-            <MarketDominance/>
+    <div className="flex flex-col items-center w-full">
+      <div className="w-[80%] mx-auto my-8 space-y-8">
+
+        <div
+          className="
+            grid gap-8
+            md:grid-cols-1   /* single column on medium */
+            lg:grid-cols-[2fr_1fr] /* two columns on large */
+            
+          "
+        >
+          {/* Left side: Crypto */}
+          <Crypto />
+
+          {/* Right side: Gainer + Dominance stacked */}
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-1">
+            <GainerLoser />
+            <MarketDominance />
           </div>
         </div>
-        <CryptoNews/>
-    </div>
-  )
-}
 
-export default Alignment
+        {/* News below */}
+        <CryptoNews />
+      </div>
+    </div>
+  );
+};
+
+export default Alignment;

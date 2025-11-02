@@ -45,17 +45,17 @@ export default function MarketDominance() {
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-2">
           <SiBitcoin color="orange" size={20} />
-          <p>BTC: {data.btc.toFixed(2)}%</p>
+          <p>BitCoin: {data.btc.toFixed(2)}%</p>
         </div>
         <div className="flex items-center gap-2">
           <SiEthereum color="blue" size={20} />
-          <p>ETH: {data.eth.toFixed(2)}%</p>
+          <p>Ethereum: {data.eth.toFixed(2)}%</p>
         </div>
         <div className="flex items-center gap-2">
           <SiTether color="green" size={20} />
-          <p>USDT: {data.usdt.toFixed(2)}%</p>
+          <p>Tether USDT: {data.usdt.toFixed(2)}%</p>
         </div>
-        <p>Others: {data.others.toFixed(2)}%</p>
+        <p>Other crypto: {data.others.toFixed(2)}%</p>
       </div>
 
       <div className="mt-3 text-sm text-gray-400 space-y-1">

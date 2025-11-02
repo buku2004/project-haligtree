@@ -24,11 +24,11 @@ export default function Navbar() {
   // }  
 
   return (
-    <div className="overflow-hidden inline h-screen relative">
+    <div className="overflow-hidden h-screen relative z-[9999] hidden md:inline">
       {/* Sidebar */}
       <div
         className={cn(
-          "bg-slate-200/20 border-1 flex flex-col transition-all duration-300 ease-in-out fixed left-0 top-0 bottom-0 shadow-md",
+          "bg-slate-200/20 border-1 flex flex-col transition-all duration-300 ease-in-out fixed left-0 top-0 bottom-0 shadow-md backdrop-blur-sm",
           collapsed ? "w-[4rem]" : "w-[13rem]"
         )}
       >
@@ -66,7 +66,7 @@ export default function Navbar() {
                     <Button
                       variant="ghost"
                       className={cn(
-                        "w-full flex transition-all duration-200 ease-in-out cursor-pointer",
+                        "w-full flex transition-all duration-200 ease-in-out cursor-pointer hover:bg-blue-200/20",
                         collapsed ? "justify-center px-2" : "justify-start px-3"
                       )}
                     >

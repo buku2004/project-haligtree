@@ -33,17 +33,14 @@ const CryptoDashboard = () => {
 
   useEffect(() => {
     let ws: WebSocket | null = null;
-
     const connectWebSocket = () => {
       try {
         if (ws) ws.close();
-
         ws = new WebSocket("ws://localhost:5000");
         setStatus("Connecting...");
         setError(null);
 
         ws.onopen = () => {
-          console.log("✅ WebSocket connected");
           setStatus("Connected");
         };
 
@@ -56,19 +53,16 @@ const CryptoDashboard = () => {
           }
         };
 
-        ws.onerror = (event) => {
-          console.error("WebSocket error:", event);
+        ws.onerror = () => {
           setError("Connection error");
           setStatus("Error");
         };
 
         ws.onclose = () => {
-          console.log("🔄 WebSocket closed. Reconnecting in 3 seconds...");
           setStatus("Reconnecting...");
           setTimeout(connectWebSocket, 3000);
         };
-      } catch (err) {
-        console.error("Failed to connect:", err);
+      } catch {
         setError("Failed to connect");
         setStatus("Error");
         setTimeout(connectWebSocket, 3000);
@@ -76,7 +70,6 @@ const CryptoDashboard = () => {
     };
 
     connectWebSocket();
-
     return () => {
       if (ws) ws.close();
     };
@@ -90,13 +83,10 @@ const CryptoDashboard = () => {
   };
 
   return (
-    <div className="relative p-6
-    bg-gray-200/40
-    rounded-lg shadow-md max-w-[85%] cursor-default ml-auto"
-    >
-      <h1 
-      onClick={handleClick}
-      className={`text-2xl text-[#333] font-bold mb-4 
+    <div className="relative p-6 bg-gray-200/40 rounded-lg shadow-md cursor-default">
+      <h1
+        onClick={handleClick}
+        className={`text-2xl text-[#333] font-bold mb-4 
         ${animate ? 'animate__animated animate__bounce' : ''}`}
       >
         Popular Coins
@@ -113,7 +103,7 @@ const CryptoDashboard = () => {
           {cryptoData.map((crypto) => (
             <div
               key={crypto.symbol}
-              className="relative z-10 p-4 b-w-4 rounded-lg shadow-lg bg-white/80 text-[#333]"
+              className="relative z-10 p-4 rounded-lg shadow-lg bg-white/80 text-[#333]"
             >
               <div className="text-lg font-semibold">
                 {CryptoNames[crypto.symbol] || crypto.symbol}
@@ -121,16 +111,22 @@ const CryptoDashboard = () => {
               <div className="text-2xl font-bold mt-1">
                 ${crypto.price.toFixed(4)}
               </div>
-              {typeof crypto.priceChangePercent === 'number' && (
-                <div className={`text-sm ${crypto.priceChangePercent < 0 ? 'text-red-600' : 'text-green-600'}`}>
+              {typeof crypto.priceChangePercent === "number" && (
+                <div
+                  className={`text-sm ${
+                    crypto.priceChangePercent < 0
+                      ? "text-red-600"
+                      : "text-green-600"
+                  }`}
+                >
                   {crypto.priceChangePercent.toFixed(2)}%
                 </div>
-               )}
-
+              )}
               <div>
-                  Volume: {crypto.volume?.toLocaleString(undefined, {
-                      maximumFractionDigits: 0,
-                    })}
+                Volume:{" "}
+                {crypto.volume?.toLocaleString(undefined, {
+                  maximumFractionDigits: 0,
+                })}
               </div>
             </div>
           ))}
