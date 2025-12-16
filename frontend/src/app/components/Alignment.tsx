@@ -17,17 +17,12 @@ const Alignment = () => {
             
           "
         >
-          {/* Left side: Crypto */}
           <Crypto />
-
-          {/* Right side: Gainer + Dominance stacked */}
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-1">
             <GainerLoser />
             <MarketDominance />
           </div>
         </div>
-
-        {/* News below */}
         <CryptoNews />
       </div>
     </div>

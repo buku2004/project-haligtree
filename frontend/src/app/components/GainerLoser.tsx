@@ -24,7 +24,10 @@ export default function TopMovers() {
   }, []);
 
   if (error) return <div className="text-red-500">{error}</div>;
-  if (!data.length) return <div>Loading top movers...</div>;
+  if (!data.length) return <div className="animate-pulse bg-gray-200 h-24 rounded-lg flex items-center justify-center">
+    <p className="text-gray-500">Loading data...</p>
+  </div>;
+
 
   const gainers = [...data]
     .sort((a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h)

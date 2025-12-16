@@ -1,14 +1,15 @@
-import React from 'react'
 import Alignment from './components/Alignment'
 import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 
-const page = () => {
+export default async function page() {
+  await new Promise((res) => setTimeout(res, 2000))
+
   return (
     <>
-    <Navbar/>
-    <Alignment/>  
+      <Navbar />
+      <Alignment />
+      <Footer/>
     </>
   )
 }
-
-export default page
