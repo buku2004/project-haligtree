@@ -14,7 +14,7 @@ export default function TopMovers() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("/api/losers-gainers")
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/losers-gainers`)
       .then((res) => res.json())
       .then(setData)
       .catch((err) => {

@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import "animate.css";
 
 interface CryptoData {
   symbol: string;

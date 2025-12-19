@@ -29,7 +29,7 @@ export default function MarketDominance() {
   const [data, setData] = useState<DominanceData | null>(null);
 
   useEffect(() => {
-    fetch("/api/market-dominance")
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/market-dominance`)
       .then((res) => res.json())
       .then(setData)
       .catch(console.error);
