@@ -1,19 +1,27 @@
 "use client"
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { ChevronLeft, ChevronRight, Home, Wallet,DollarSign, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
+type NavItem = {
+  icon: React.ElementType;
+  label: string;
+  href: string;
+};
+
+
 export default function Navbar() {
   const [collapsed, setCollapsed] = useState(true);
   // const [animate, setAnimate] = useState(true);
 
-  const navItems = [
-    { icon: Home, label: "Dashboard" },
-    { icon: Wallet, label: "Wallet" },
-    { icon: DollarSign, label: "Currency" },
-    { icon: Settings, label: "Settings" }
+  const navItems: NavItem[] = [
+    { icon: Home, label: "Dashboard", href: "/" },
+    { icon: Wallet, label: "Wallet", href: "/charts" },
+    { icon: DollarSign, label: "Currency", href: "/" },
+    { icon: Settings, label: "Settings", href: "/" }
   ];
 
   // const handleClick = () => {
@@ -63,6 +71,7 @@ export default function Navbar() {
               {navItems.map((item, index) => (
                 <Tooltip key={index}>
                   <TooltipTrigger asChild>
+                    <Link href={item.href} className='block'>
                     <Button
                       variant="ghost"
                       className={cn(
@@ -78,6 +87,7 @@ export default function Navbar() {
                         {item.label}
                       </span>
                     </Button>
+                    </Link>
                   </TooltipTrigger>
                   {collapsed && (
                     <TooltipContent side="right">
