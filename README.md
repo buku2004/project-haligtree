@@ -1,36 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CryptoBoard
 
-## Getting Started
+A Next.js crypto dashboard that combines real-time market streaming with API-driven widgets.
 
-First, run the development server:
+Backend repository:
+- https://github.com/buku2004/haligtree-backend
+
+The app focuses on:
+- live popular coin prices via WebSocket
+- top gainers and losers
+- market dominance and global stats
+- crypto news
+- USD and INR display toggle in the sidebar
+
+## Tech Stack
+
+- Next.js (App Router)
+- React + TypeScript
+- Tailwind CSS
+- Lucide icons
+
+## Run Locally
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Open http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment And Services
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This frontend relies on a separate Express backend repository for all market data.
 
-## Learn More
+This repo does not include the backend server implementation.
 
-To learn more about Next.js, take a look at the following resources:
+The frontend expects two backend data channels:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. REST API base URL:
+- env variable: `NEXT_PUBLIC_API_BASE_URL`
+- used by widgets like gainers/losers, news, and other API-driven cards
+- expected routes on backend:
+	- `/api/losers-gainers`
+	- `/api/market-dominance`
+	- `/api/klines?symbol=BTCUSDT&interval=1m&limit=500`
+	- `/api/crypto-news`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. WebSocket stream from the same backend service:
+- default URL placeholder: `ws://localhost`
+- used in `Crypto` component
+- supports USD and INR values from stream payload
+- payload contains coin entries like:
+	- `symbol`
+	- `price` / `priceUsd`
+	- `priceInr`
+	- `volume`
+	- `priceChangePercent`
+	- `timestamp`
 
-## Deploy on Vercel
+Important: start your Express backend repo first, then run this frontend.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Backend Setup (Required)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+In your backend repo (haligtree-backend):
+
+1. Create environment variables:
+- `PORT`
+- `CRYPTOCOMPARE_API_KEY` (required for `/api/crypto-news`)
+- `USD_INR_FALLBACK_RATE` (optional, used if exchange rate fetch fails)
+
+2. Start backend first (from backend repo), then start this frontend.
+
+3. Set frontend env in this repo:
+
+```env
+NEXT_PUBLIC_API_BASE_URL=http://localhost
+```
+
+## Project Structure (Brief)
+
+- `src/app/page.tsx`: entry page, mounts dashboard shell + footer
+- `src/app/components/DashboardShell.tsx`: shared client state, flips currency between USD and INR
+- `src/app/components/Navbar.tsx`: sidebar navigation; Currency button triggers the USD/INR toggle
+- `src/app/components/Alignment.tsx`: main dashboard layout grid
+- `src/app/components/Crypto.tsx`: live coin cards from WebSocket, renders INR using `priceInr` (also supports `inrPrice` and `price_inr`) with USD fallback
+- `src/app/components/GainerLoser.tsx`: top movers list from API
+- `src/app/components/MarketDominance.tsx`: market dominance widget
+- `src/app/components/CryptoNews.tsx`: news section
+- `src/app/charts/`: chart page and chart components
+
+## Notes
+
+- The project uses both server and client components.
+- If the backend WebSocket stream is unavailable, the price panel keeps retrying connection.
+- If API endpoints fail, widgets show loading/error-safe fallback UI.
