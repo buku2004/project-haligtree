@@ -5,22 +5,34 @@ import { ChevronLeft, ChevronRight, Home, Wallet,DollarSign, Settings } from 'lu
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import type { Currency } from './DashboardShell';
 
 type NavItem = {
   icon: React.ElementType;
   label: string;
-  href: string;
+  href?: string;
+  onClick?: () => void;
+  active?: boolean;
 };
 
+interface NavbarProps {
+  currency: Currency;
+  onToggleCurrency: () => void;
+}
 
-export default function Navbar() {
+export default function Navbar({ currency, onToggleCurrency }: NavbarProps) {
   const [collapsed, setCollapsed] = useState(true);
   // const [animate, setAnimate] = useState(true);
 
   const navItems: NavItem[] = [
     { icon: Home, label: "Dashboard", href: "/" },
     { icon: Wallet, label: "Wallet", href: "/charts" },
-    { icon: DollarSign, label: "Currency", href: "/" },
+    {
+      icon: DollarSign,
+      label: `Currency: ${currency}`,
+      onClick: onToggleCurrency,
+      active: true,
+    },
     { icon: Settings, label: "Settings", href: "/" }
   ];
 
@@ -71,23 +83,44 @@ export default function Navbar() {
               {navItems.map((item, index) => (
                 <Tooltip key={index}>
                   <TooltipTrigger asChild>
-                    <Link href={item.href} className='block'>
-                    <Button
-                      variant="ghost"
-                      className={cn(
-                        "w-full flex transition-all duration-200 ease-in-out cursor-pointer hover:bg-blue-200/20",
-                        collapsed ? "justify-center px-2" : "justify-start px-3"
-                      )}
-                    >
-                      <item.icon className={cn("h-5 w-5", collapsed ? "" : "mr-3")} />
-                      <span className={cn(
-                        "transition-opacity duration-200",
-                        collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
-                      )}>
-                        {item.label}
-                      </span>
-                    </Button>
-                    </Link>
+                    {item.onClick ? (
+                      <Button
+                        type="button"
+                        onClick={item.onClick}
+                        variant="ghost"
+                        className={cn(
+                          "w-full flex transition-all duration-200 ease-in-out cursor-pointer hover:bg-blue-200/20",
+                          item.active && "bg-blue-200/30",
+                          collapsed ? "justify-center px-2" : "justify-start px-3"
+                        )}
+                      >
+                        <item.icon className={cn("h-5 w-5", collapsed ? "" : "mr-3")} />
+                        <span className={cn(
+                          "transition-opacity duration-200",
+                          collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
+                        )}>
+                          {item.label}
+                        </span>
+                      </Button>
+                    ) : (
+                      <Link href={item.href ?? '/'} className='block'>
+                        <Button
+                          variant="ghost"
+                          className={cn(
+                            "w-full flex transition-all duration-200 ease-in-out cursor-pointer hover:bg-blue-200/20",
+                            collapsed ? "justify-center px-2" : "justify-start px-3"
+                          )}
+                        >
+                          <item.icon className={cn("h-5 w-5", collapsed ? "" : "mr-3")} />
+                          <span className={cn(
+                            "transition-opacity duration-200",
+                            collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
+                          )}>
+                            {item.label}
+                          </span>
+                        </Button>
+                      </Link>
+                    )}
                   </TooltipTrigger>
                   {collapsed && (
                     <TooltipContent side="right">

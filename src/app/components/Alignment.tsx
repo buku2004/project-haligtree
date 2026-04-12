@@ -3,8 +3,13 @@ import CryptoNews from "./CryptoNews";
 import Crypto from "./Crypto";
 import GainerLoser from "./GainerLoser";
 import MarketDominance from "./MarketDominance";
+import type { Currency } from "./DashboardShell";
 
-const Alignment = () => {
+interface AlignmentProps {
+  currency: Currency;
+}
+
+const Alignment = ({ currency }: AlignmentProps) => {
   return (
     <div className="flex flex-col items-center w-full">
       <div className="w-[80%] mx-auto my-8 space-y-8">
@@ -17,7 +22,7 @@ const Alignment = () => {
             
           "
         >
-          <Crypto />
+          <Crypto currency={currency} />
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-1">
             <GainerLoser />
             <MarketDominance />

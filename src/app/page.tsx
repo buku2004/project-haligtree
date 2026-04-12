@@ -1,14 +1,12 @@
-import Alignment from './components/Alignment'
-import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import DashboardShell from './components/DashboardShell'
 
 export default async function page() {
   await new Promise((res) => setTimeout(res, 2000))
 
   return (
     <>
-      <Navbar />
-      <Alignment />
+      <DashboardShell />
       <Footer/>
     </>
   )

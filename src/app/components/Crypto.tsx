@@ -1,9 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import type { Currency } from "./DashboardShell";
 
 interface CryptoData {
   symbol: string;
   price: number;
+  inrPrice?: number;
+  price_inr?: number;
+  priceInr?: number;
   timestamp: string;
   volume?: number;
   priceChangePercent?: number;
@@ -24,11 +28,36 @@ const CryptoNames: { [key: string]: string } = {
   LTCUSDT: "Litecoin"
 };
 
-const CryptoDashboard = () => {
+interface CryptoDashboardProps {
+  currency: Currency;
+}
+
+const CryptoDashboard = ({ currency }: CryptoDashboardProps) => {
   const [cryptoData, setCryptoData] = useState<CryptoData[]>([]);
   const [status, setStatus] = useState<string>("Connecting...");
   const [error, setError] = useState<string | null>(null);
   const [animate, setAnimate] = useState(true);
+
+  const getInrPrice = (crypto: CryptoData): number | null => {
+    if (typeof crypto.inrPrice === "number") return crypto.inrPrice;
+    if (typeof crypto.price_inr === "number") return crypto.price_inr;
+    if (typeof crypto.priceInr === "number") return crypto.priceInr;
+    return null;
+  };
+
+  const formatPrice = (crypto: CryptoData): string => {
+    if (currency === "INR") {
+      const inrPrice = getInrPrice(crypto);
+      if (typeof inrPrice === "number") {
+        return `₹${inrPrice.toLocaleString("en-IN", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`;
+      }
+    }
+
+    return `$${crypto.price.toFixed(4)}`;
+  };
 
   useEffect(() => {
     let ws: WebSocket | null = null;
@@ -92,6 +121,7 @@ const CryptoDashboard = () => {
       </h1>
 
       <div className="mb-2 text-sm">Status: {status}</div>
+      <div className="mb-3 text-sm font-medium text-[#444]">Currency: {currency}</div>
 
       {error && (
         <div className="mb-4 p-2 bg-red-100 text-red-700 rounded">{error}</div>
@@ -108,7 +138,7 @@ const CryptoDashboard = () => {
                 {CryptoNames[crypto.symbol] || crypto.symbol}
               </div>
               <div className="text-2xl font-bold mt-1">
-                ${crypto.price.toFixed(4)}
+                {formatPrice(crypto)}
               </div>
               {typeof crypto.priceChangePercent === "number" && (
                 <div
