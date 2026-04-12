@@ -28,49 +28,60 @@ const CryptoNews = () => {
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchNews = async () => {
+    const fetchNews = async (signal?: AbortSignal) => {
       try {
         setLoading(true);
-        const APIkey = process.env.CRYPTOCOMPARE_API_KEY;
+        setError(null);
 
-        const response = await fetch(
-          "https://min-api.cryptocompare.com/data/v2/news/?lang=EN&sortOrder=latest&limit=16",
-          {
-            headers: {
-              Accept: "application/json",
-              authorization: `Apikey ${APIkey}`,
-            },
-          }
-        );
+        const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
+        const response = await fetch(`${baseUrl}/api/crypto-news`, { signal });
 
-        if (!response.ok) throw new Error(`Error: ${response.status}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch news: ${response.status}`);
+        }
 
         const data = await response.json();
+        const rawItems: ApiNewsItem[] = Array.isArray(data)
+          ? data
+          : Array.isArray(data?.Data)
+            ? data.Data
+            : [];
 
-        if (data?.Data?.length) {
-          const articles = data.Data.map((item: ApiNewsItem) => ({
-            title: item.title,
-            description: item.body || item.categories,
-            url: item.url,
-            imageUrl: item.imageurl || "https://via.placeholder.com/300",
-            publishedDate: new Date(item.published_on * 1000).toLocaleDateString(),
-            source: item.source || item.source_info?.name || "Unknown",
-          }));
+        const mappedNews = rawItems.map((item) => ({
+          title: item.title || "Untitled",
+          description: item.body || "No description available.",
+          url: item.url || "#",
+          imageUrl: item.imageurl || "https://placehold.co/640x360?text=No+Image",
+          publishedDate: item.published_on
+            ? new Date(item.published_on * 1000).toLocaleDateString()
+            : "Unknown date",
+          source: item.source_info?.name || item.source || "Unknown source",
+        }));
 
-          setNews(articles);
-          setLastUpdated(new Date().toLocaleTimeString());
-        }
+        setNews(mappedNews);
+        setLastUpdated(new Date().toLocaleTimeString());
       } catch (err) {
-        console.error("Error fetching news:", err);
-        setError("Failed to load crypto news");
+        if (err instanceof DOMException && err.name === "AbortError") {
+          return;
+        }
+        console.error(err);
+        setError("Failed to load news");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchNews();
-    const refreshInterval = setInterval(fetchNews, 15 * 60 * 1000);
-    return () => clearInterval(refreshInterval);
+    const controller = new AbortController();
+    fetchNews(controller.signal);
+
+    const refreshInterval = setInterval(() => {
+      fetchNews();
+    }, 15 * 60 * 1000);
+
+    return () => {
+      controller.abort();
+      clearInterval(refreshInterval);
+    };
   }, []);
 
   if (error) {
