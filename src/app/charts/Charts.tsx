@@ -6,46 +6,72 @@ import {
   CandlestickData,
 } from "lightweight-charts";
 
-interface Props{
-    symbol: string;
-    interval: string;
+interface Props {
+  symbol: string;
+  interval: string;
+  title?: string;
 }
 
-export default function CandleChart({ symbol, interval }: Props) {
-  // hold a refernce to empty div as chart need a div to render on
+export default function CandleChart({ symbol, interval, title }: Props) {
   const chartContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // check if div exists
-    if (!chartContainerRef.current) return;
+    const container = chartContainerRef.current;
+    if (!container) return;
 
-    const chart = createChart(chartContainerRef.current, {
-      height: 400,
-      width: 1000,
+    const apiBaseUrl =
+      process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
+
+    const chart = createChart(container, {
+      height: 320,
+      width: container.clientWidth,
       layout: {
         background: { color: "#0f172a" },
         textColor: "#e5e7eb",
       },
+      grid: {
+        vertLines: { color: "#1f2937" },
+        horzLines: { color: "#1f2937" },
+      },
+      rightPriceScale: {
+        borderColor: "#374151",
+      },
+      timeScale: {
+        borderColor: "#374151",
+      },
     });
 
-    // data layer for, like how charts look for stocks/crpyto
     const candleSeries = chart.addSeries(CandlestickSeries);
 
     fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/klines?symbol=${symbol}&interval=${interval}`
+      `${apiBaseUrl}/api/klines?symbol=${symbol}&interval=${interval}&limit=500`
     )
       .then((res) => res.json())
       .then((data: CandlestickData[]) => {
         candleSeries.setData(data);
+        chart.timeScale().fitContent();
       });
 
-    return () => chart.remove();
+    const resizeObserver = new ResizeObserver(() => {
+      chart.applyOptions({
+        width: container.clientWidth,
+      });
+    });
+
+    resizeObserver.observe(container);
+
+    return () => {
+      resizeObserver.disconnect();
+      chart.remove();
+    };
   }, [symbol, interval]);
 
   return (
-    <div ref={chartContainerRef} className="m-4">
-      BTCUSDT 1m Interval
+    <div className="rounded-xl border border-slate-700/60 bg-slate-900/80 p-4 shadow-lg">
+      <div className="mb-3 text-sm font-semibold tracking-wide text-slate-200">
+        {title || symbol} ({interval})
+      </div>
+      <div ref={chartContainerRef} className="w-full" />
     </div>
-  )
-
+  );
 }

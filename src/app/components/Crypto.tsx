@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import type { Currency } from "./DashboardShell";
+import CoinVolumeHover from "./CoinVolumeHover";  
 
 interface CryptoData {
   symbol: string;
@@ -33,6 +35,7 @@ interface CryptoDashboardProps {
 }
 
 const CryptoDashboard = ({ currency }: CryptoDashboardProps) => {
+  const router = useRouter();
   const [cryptoData, setCryptoData] = useState<CryptoData[]>([]);
   const [status, setStatus] = useState<string>("Connecting...");
   const [error, setError] = useState<string | null>(null);
@@ -110,6 +113,10 @@ const CryptoDashboard = ({ currency }: CryptoDashboardProps) => {
     }, 10);
   };
 
+  const handleCoinClick = (symbol: string) => {
+    router.push(`/charts?symbol=${encodeURIComponent(symbol)}`);
+  };
+
   return (
     <div className="relative p-6 bg-gray-200/40 rounded-lg shadow-md cursor-default">
       <h1
@@ -128,36 +135,34 @@ const CryptoDashboard = ({ currency }: CryptoDashboardProps) => {
       )}
 
       {cryptoData.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {cryptoData.map((crypto) => (
-            <div
-              key={crypto.symbol}
-              className="relative z-10 p-4 rounded-lg shadow-lg bg-white/80 text-[#333]"
-            >
-              <div className="text-lg font-semibold">
-                {CryptoNames[crypto.symbol] || crypto.symbol}
-              </div>
-              <div className="text-2xl font-bold mt-1">
-                {formatPrice(crypto)}
-              </div>
-              {typeof crypto.priceChangePercent === "number" && (
+            <CoinVolumeHover key={crypto.symbol} volume={crypto.volume}>
+              <div
+                onClick={() => handleCoinClick(crypto.symbol)}
+                className="relative z-10 flex items-center justify-between gap-4 p-4 rounded-lg shadow-lg bg-white/80 text-[#333] cursor-pointer"
+              >
+                <div className="text-lg font-semibold min-w-0 truncate">
+                  {CryptoNames[crypto.symbol] || crypto.symbol}
+                </div>
+                <div className="text-xl font-bold whitespace-nowrap">
+                  {formatPrice(crypto)}
+                </div>
                 <div
-                  className={`text-sm ${
-                    crypto.priceChangePercent < 0
-                      ? "text-red-600"
-                      : "text-green-600"
+                  className={`text-sm font-medium whitespace-nowrap ${
+                    typeof crypto.priceChangePercent === "number"
+                      ? crypto.priceChangePercent < 0
+                        ? "text-red-600"
+                        : "text-green-600"
+                      : "text-[#666]"
                   }`}
                 >
-                  {crypto.priceChangePercent.toFixed(2)}%
+                  {typeof crypto.priceChangePercent === "number"
+                    ? `${crypto.priceChangePercent.toFixed(2)}%`
+                    : "N/A"}
                 </div>
-              )}
-              <div>
-                Volume:{" "}
-                {crypto.volume?.toLocaleString(undefined, {
-                  maximumFractionDigits: 0,
-                })}
               </div>
-            </div>
+            </CoinVolumeHover>
           ))}
         </div>
       ) : (

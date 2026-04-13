@@ -25,20 +25,45 @@ interface DominanceData {
   activeCrypto: number;
 }
 
+const toSafeNumber = (value: unknown): number => {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : 0;
+};
+
 export default function MarketDominance() {
   const [data, setData] = useState<DominanceData | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/market-dominance`)
+    const apiBaseUrl =
+      process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
+
+    fetch(`${apiBaseUrl}/api/market-dominance`)
       .then((res) => res.json())
-      .then(setData)
-      .catch(console.error);
+      .then((incoming) => {
+        const normalized: DominanceData = {
+          btc: toSafeNumber(incoming?.btc),
+          eth: toSafeNumber(incoming?.eth),
+          usdt: toSafeNumber(incoming?.usdt),
+          others: toSafeNumber(incoming?.others),
+          totalMarketCap: toSafeNumber(incoming?.totalMarketCap),
+          volume24h: toSafeNumber(incoming?.volume24h),
+          activeCrypto: Math.round(toSafeNumber(incoming?.activeCrypto)),
+        };
+
+        setData(normalized);
+        setError(null);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError("Failed to load market dominance data");
+      });
   }, []);
 
   if (!data) {
     return (
       <div className="animate-pulse bg-gray-200 h-24 rounded-lg flex items-center justify-center">
-        <p className="text-gray-500">Loading data...</p>
+        <p className="text-gray-500">{error || "Loading data..."}</p>
       </div>
     );
   }
@@ -66,10 +91,10 @@ export default function MarketDominance() {
 
         <div>
           <span className="flex items-center gap-1">
-            <span className="h-2 w-2 rounded-full bg-blue-500" />
-            Ethereum
+            <span className="h-2 w-2 rounded-full bg-green-500" />
+            USDT
           </span>
-          <p className="text-xl font-bold text-[#333]">{data.eth.toFixed(1)}%</p>
+          <p className="text-xl font-bold text-[#333]">{data.usdt.toFixed(1)}%</p>
         </div>
 
         <div>
